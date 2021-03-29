@@ -2,6 +2,7 @@
 """ Console Module """
 import cmd
 import sys
+import sqlalchemy
 from models.base_model import BaseModel
 from models.__init__ import storage
 from models.user import User
@@ -115,21 +116,49 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        if len(args) is 0:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        new_args = args.split()
+
+        kwargs = {}
+
+
+        if new_args[0] in HBNBCommand.classes:
+            for link in new_args:
+                if "=" in link:
+                    key = link.split("=")[0]
+                    value = link.split("=")[1]
+                    if '\"' in value:
+                        value = value[1:-1]
+                        if "_" in value:
+                            value = value.replace('_', ' ')
+                    elif "." in value:
+                        value = float(value)
+                    else:
+                        value = int(value)
+                    kwargs[key] = value
+
+            new_instance = HBNBCommand.classes[new_args[0]]()
+            for key, value in kwargs.items():
+                if hasattr(new_instance, key):
+                    setattr(new_instance, key, value)
+            new_instance.save()
+            print(new_instance.id)
+
+        else:
             print("** class doesn't exist **")
-            return
+
+        """
         new_instance = HBNBCommand.classes[args]()
         storage.save()
         print(new_instance.id)
         storage.save()
-
+        """
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <className>\n")
+        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
@@ -319,6 +348,23 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
+    @staticmethod
+    def check_int(val):
+        """Checks if val is an integer value"""
+        try:
+            int(val)
+            return True
+        except ValueError:
+            return False
+    @staticmethod
+    def check_float(val):
+        """Checks if val is an integer value"""
+        try:
+            float(val)
+            return True
+        except ValueError:
+            return False
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
