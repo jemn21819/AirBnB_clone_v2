@@ -13,7 +13,7 @@ class FileStorage:
         if cls:
             new_dict = {}
             for key, value in self.__objects.items():
-                if isinstance(value, cls):
+                if cls.__name__ == value.__class__.__name__:
                     new_dict[key] = value
             return new_dict
         return FileStorage.__objects
@@ -34,9 +34,12 @@ class FileStorage:
     def delete(self, obj=None):
         """Delete a specific object"""
         if obj:
-            obj_del = obj.__class__.__name__ + '.' + obj.id
-            if obj_del in self.__objects:
+            try:
+                obj_del = "{}.{}".format(type(obj).__name__, obj.id)
                 del self.__objects[obj_del]
+                self.save()
+            except:
+                pass
 
     def reload(self):
         """Loads storage dictionary from file"""
