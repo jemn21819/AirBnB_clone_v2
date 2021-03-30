@@ -123,7 +123,6 @@ class HBNBCommand(cmd.Cmd):
 
         kwargs = {}
 
-
         if new_args[0] in HBNBCommand.classes:
             for link in new_args:
                 if "=" in link:
@@ -158,7 +157,8 @@ class HBNBCommand(cmd.Cmd):
     def help_create(self):
         """ Help information for the create method """
         print("Creates a class of any type")
-        print("[Usage]: create <Class name> <param 1> <param 2> <param 3>...\n")
+        print("[Usage]: create <Class name> <param 1>\
+              <param 2> <param 3>...\n")
 
     def do_show(self, args):
         """ Method to show an individual object """
