@@ -30,7 +30,12 @@ class DBStorage:
                                       format(MySQL_user,
                                              MySQL_password,
                                              MySQL_host,
+<<<<<<< HEAD
                                              MySQL_database))
+=======
+                                             MySQL_database,
+                                             pool_pre_ping=True))
+>>>>>>> c8f514367a76e121347f5a4c2dc7e61eadc34a12
         Base.metadata.create_all(self.__engine)
         if getenv('HBNB_ENV') == "test":
             Base.metadata.drop_all(self.__engine)
@@ -63,7 +68,8 @@ class DBStorage:
             self.__session.delete(obj)
 
     def reload(self):
-        """create all tables in the database (feature of SQLAlchemy)"""
+        """
+        create all tables in the database (feature of SQLAlchemy)"""
         Base.metadata.create_all(self.__engine)
         session_factory = sessionmaker(
                 bind=self.__engine, expire_on_commit=False)
