@@ -13,6 +13,7 @@ import uuid
 
 time = "%Y-%m-%dT%H:%M:%S.%f"
 
+
 if getenv('HBNB_TYPE_STORAGE') == "db":
     Base = declarative_base()
 else:
@@ -21,12 +22,11 @@ else:
 
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
-    if getenv('HBNB_TYPE_STORAGE') == "db":
-        id = Column(String(60), nullable=False, primary_key=True)
-        created_at = Column(DateTime, nullable=False,
-                            default=datetime.utcnow())
-        updated_at = Column(DateTime, nullable=False,
-                            default=datetime.utcnow())
+    id = Column(String(60), nullable=False, primary_key=True)
+    created_at = Column(DateTime, nullable=False,
+                        default=datetime.utcnow())
+    updated_at = Column(DateTime, nullable=False,
+                        default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Initialization of the base model"""
