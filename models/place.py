@@ -45,7 +45,7 @@ class Place(BaseModel, Base):
         review_list = []
         review_obj = models.storage.all(Review)
         for review in review_obj.values():
-            if review.place_id is self.id:
+            if review.place_id == self.id:
                 review_list.append(review)
 
         return review_list
@@ -64,11 +64,9 @@ class Place(BaseModel, Base):
         return amenity_list
 
     @amenities.setter
-    def amenities(self, obj=None):
+    def amenities(self, obj):
         """
         Setter for amenity instance
         """
         if type(obj) == Amenity:
             self.amenity_ids.append(obj.id)
-        else:
-            pass
