@@ -95,4 +95,3 @@ class Place(BaseModel, Base):
                 self.amenity_ids.append(obj.id)
             else:
                 pass
-
