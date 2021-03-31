@@ -6,15 +6,16 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import Table, Column, String, Integer, Float, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from models.base_model import BaseModel, Base
+from models.review import Review
 from os import getenv
 from models.amenity import Amenity
 
 metadata = Base.metadata
 place_amenity = Table('place_amenity', metadata,
                       Column('place_id', String(60), ForeignKey('places.id'),
-                             primary_key=True, nullable=False)
+                             primary_key=True, nullable=False),
                       Column('amenity_id', String(60),
-                             ForeignKey('amenities.id') primary_key=True,
+                             ForeignKey('amenities.id'), primary_key=True,
                              nullable=False))
 
 
@@ -36,7 +37,7 @@ class Place(BaseModel, Base):
     amenities = relationship('Amenity', secondary='place_amenity',
                              backref='places', viewonly=False)
 
-    @properties
+    @property
     def review(self):
         """
         Returns instance of the reviews
@@ -66,5 +67,6 @@ class Place(BaseModel, Base):
         """
         Setter for amenity instance
         """
-        if type(obj) is Amenity:
+        if type(obj) == Amenity:
             self.amenity_ids.append(obj.id)
+            amenity_ids
