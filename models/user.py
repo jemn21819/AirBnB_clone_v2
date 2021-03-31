@@ -19,3 +19,8 @@ class User(BaseModel, Base):
                               backref='user')
         reviews = relationship('Review', cascade='all, delete',
                                backref='user')
+    else:
+        email = ""
+        password = ""
+        first_name = ""
+        last_name = ""
