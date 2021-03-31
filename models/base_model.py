@@ -3,15 +3,11 @@
 import uuid
 import models
 from datetime import datetime
-import sqlalchemy
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 
 
-if getenv('HBNB_TYPE_STORAGE') == "db":
-    Base = declarative_base()
-else:
-    Base = object
+Base = declarative_base()
 
 
 class BaseModel:
@@ -21,7 +17,7 @@ class BaseModel:
     updated_at = Column(DateTime, default=datetime.utcnow(), nullable=False)
 
     def __init__(self, *args, **kwargs):
-        """Instatntiates a new model"""
+        """Instantiates a new model"""
         if len(kwargs) == 0:
             self.id = str(uuid.uuid4())
             self.created_at = self.updated_at = datetime.now()
@@ -55,12 +51,12 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        dictionary = {}
-        dictionary.update(self.__dict__)
-        dictionary.update({'__class__': self.__class__.__name__})
-        dictionary['created_at'] = self.created_at.isoformat()
-        dictionary['updated_at'] = self.updated_at.isoformat()
-        dictionary.pop("_sa_instance_state", None)
+        dictionary = self.__dict__.copy()
+        dictionary["__class__"] = type(self).__name__
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary.keys():
+            del dictionary["_sa_instance_state"]
         return dictionary
 
     def delete(self):
