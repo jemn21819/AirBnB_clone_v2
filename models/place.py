@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
                              backref='places', viewonly=False)
 
     @property
-    def review(self):
+    def reviews(self):
         """
         Returns instance of the reviews
         """
