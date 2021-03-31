@@ -22,9 +22,11 @@ else:
 class BaseModel:
     """The BaseModel class from which future classes will be derived"""
     if getenv('HBNB_TYPE_STORAGE') == "db":
-        id = Column(String(60), primary_key=True)
-        created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
-        updated_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+        id = Column(String(60), nullable=False, primary_key=True)
+        created_at = Column(DateTime, nullable=False,
+                            default=datetime.utcnow())
+        updated_at = Column(DateTime, nullable=False,
+                            default=datetime.utcnow())
 
     def __init__(self, *args, **kwargs):
         """Initialization of the base model"""
@@ -60,16 +62,14 @@ class BaseModel:
 
     def to_dict(self):
         """returns a dictionary containing all keys/values of the instance"""
-        new_dict = self.__dict__.copy()
-        if "created_at" in new_dict:
-            new_dict["created_at"] = new_dict["created_at"].strftime(time)
-        if "updated_at" in new_dict:
-            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
-        new_dict["__class__"] = self.__class__.__name__
-        if "_sa_instance_state" in new_dict:
-            del new_dict["_sa_instance_state"]
-        return new_dict
+        dictionary = self.__dict__.copy()
+        dictionary["__class__"] = type(self).__name__
+        dictionary["created_at"] = self.created_at.isoformat()
+        dictionary["updated_at"] = self.updated_at.isoformat()
+        if "_sa_instance_state" in dictionary.keys():
+            del dictionary["_sa_instance_state"]
+        return dictionary
 
     def delete(self):
         """delete the current instance from the storage"""
-        models.storage.delete(self)
+        models.storage.delete()
