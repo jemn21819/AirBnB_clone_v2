@@ -19,7 +19,7 @@ class State(BaseModel, Base):
     else:
         name = ""
 
-    def __init__(self, *args, **kawrgs):
+    def __init__(self, *args, **kwargs):
         """
         Initalization of State class
         """
