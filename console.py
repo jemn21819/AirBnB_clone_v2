@@ -3,7 +3,9 @@
 import cmd
 import sys
 import sqlalchemy
+import models
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
