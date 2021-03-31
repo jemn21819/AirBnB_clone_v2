@@ -49,7 +49,8 @@ class DBStorage:
 
     def new(self, obj):
         """add the object to the current database session"""
-        self.__session.add(obj)
+        if obj:
+            self.__session.add(obj)
 
     def save(self):
         """commit all changes of the current database session"""
@@ -57,7 +58,7 @@ class DBStorage:
 
     def delete(self, obj=None):
         """ delete from the current database session"""
-        if obj is not None:
+        if obj:
             self.__session.delete(obj)
 
     def reload(self):
@@ -73,9 +74,4 @@ class DBStorage:
 
     def close(self):
         """close the session"""
-        self.__session.remove()
-
-    def close(self):
-        """ call remove() method on the private session attribute
-        (self.__session) tips or close() on the class Session"""
         self.__session.close()
