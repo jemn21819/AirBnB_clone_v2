@@ -96,6 +96,7 @@ class test_fileStorage(unittest.TestCase):
 
     def test_key_format(self):
         """ Key is properly formatted """
+        temp = {}
         new = BaseModel()
         _id = new.to_dict()['id']
         for key in storage.all().keys():
