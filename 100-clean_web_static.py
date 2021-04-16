@@ -56,18 +56,16 @@ def deploy():
 
 
 def do_clean(number=0):
-    """Deletes out-of-date archives"""
-    files = local("ls -1t versions", capture=True)
-    file_names = files.split("\n")
-    n = int(number)
-    if n in (0, 1):
-        n = 1
-    for i in file_names[n:]:
-        local("rm versions/{}".format(i))
-    dir_server = run("ls -1t /data/web_static/releases")
-    dir_server_names = dir_server.split("\n")
-    for i in dir_server_names[n:]:
-        if i is 'test':
-            continue
-        run("rm -rf /data/web_static/releases/{}"
-            .format(i))
+    """clean
+    """
+    if int(number) <= 1:
+        number = 2
+    else:
+        number = int(number) + 1
+
+    with lcd('versions'):
+        local("ls -t | tail -n +{} | grep web_static* |\
+            xargs -r rm".format(number))
+    with cd('/data/web_static/releases/'):
+        run("ls -t | tail -n +{} | grep web_static* |\
+            xargs -r rm -r".format(number))
