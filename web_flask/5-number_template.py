@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" Module that start a Flask Webb app"""
 from flask import Flask, render_template
 app = Flask(__name__)
 
